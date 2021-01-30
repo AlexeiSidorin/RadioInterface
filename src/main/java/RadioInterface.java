@@ -6,11 +6,11 @@ import lombok.NoArgsConstructor;
 public class RadioInterface {
 
     private int currentStation;
-    private short levelSound;
+    private int levelSound;
     private int firstStation = 0;
     private int lastStation = 10;
-    private short minSound = 0;
-    private short maxSound = 100;
+    private int minSound = 0;
+    private int maxSound = 100;
 
     public RadioInterface(int currentStation) {
         if (currentStation > lastStation || currentStation < firstStation) {
@@ -19,12 +19,7 @@ public class RadioInterface {
         this.currentStation = currentStation;
     }
 
-    public RadioInterface(short levelSound) {
-       if(levelSound < minSound || levelSound > maxSound){
-           return;
-        }
-        this.levelSound = levelSound;
-    }
+
 
 
     public int setCurrentRadioStation(int currentStation){
@@ -53,9 +48,13 @@ public class RadioInterface {
     }
 
 
-    public short setCurrentLevelSound(short levelSound){
-        if(levelSound > maxSound) return this.levelSound = maxSound;
-        if(levelSound < minSound) return this.levelSound = minSound;
+    public int setCurrentLevelSound(int levelSound){
+        if(levelSound > maxSound) {
+            return this.levelSound = maxSound;
+        }
+        if(levelSound < minSound) {
+            return this.levelSound = minSound;
+        }
         return this.levelSound = levelSound;
     }
 
