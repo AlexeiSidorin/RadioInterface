@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class RadioInterfaceTest {
 
     @Test
-    void shouldSetCurrentRadioStationCorrectFromConstructor() {
+    void shouldSetCurrentRadioStationFromConstructor() {
         RadioInterface radio = new RadioInterface(10);
         int expect = 10;
         int actual = radio.getLastStation();
