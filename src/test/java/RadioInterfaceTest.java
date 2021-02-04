@@ -7,33 +7,20 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class RadioInterfaceTest {
 
-    RadioInterface radio = new RadioInterface(10);
-
     @Test
     void shouldSetCurrentRadioStationCorrectFromConstructor() {
         RadioInterface radio = new RadioInterface(10);
-         int expect = 10;
-        assertEquals(expect, radio.getCurrentStation());
+        int expect = 10;
+        int actual = radio.getLastStation();
+        assertEquals(expect, actual);
     }
 
-    @Test
-    void shouldCurrentRadioStationMoreThenLastFromConstructor(){
-        RadioInterface radio = new RadioInterface(15);
-        int expect = 0;
-        assertEquals(expect, radio.getCurrentStation());
 
-    }
 
-    @Test
-    void shouldCurrentRadioStationMoreThenFirstFromConstructor(){
-        RadioInterface radio = new RadioInterface(-12);
-        int expect = 0;
-        assertEquals(expect, radio.getCurrentStation());
-
-    }
 
     @Test
     void shouldSetCurrentRadioStationCorrect() {
+        RadioInterface radio = new RadioInterface();
         int actual = radio.setCurrentRadioStation(6);
         int expect = 6;
         assertEquals(expect, actual);
@@ -41,6 +28,7 @@ class RadioInterfaceTest {
 
     @Test
     void shouldCurrentRadioStationMoreThenLast(){
+        RadioInterface radio = new RadioInterface();
         int actual = radio.setCurrentRadioStation(15);
         int expect = 10;
         assertEquals(expect, actual);
@@ -49,6 +37,7 @@ class RadioInterfaceTest {
 
     @Test
     void shouldCurrentRadioStationMoreThenFirst(){
+        RadioInterface radio = new RadioInterface();
         int actual = radio.setCurrentRadioStation(-2);
         int expect = 0;
         assertEquals(expect, actual);
@@ -57,7 +46,8 @@ class RadioInterfaceTest {
 
     @Test
     void shouldNextRadioStationCorrect() {
-        RadioInterface radio = new RadioInterface(6);
+        RadioInterface radio = new RadioInterface();
+        radio.setCurrentRadioStation(6);
         radio.nextRadioStation();
         int actual = radio.getCurrentStation();
         int expect = 7;
@@ -66,7 +56,18 @@ class RadioInterfaceTest {
 
     @Test
     void shouldNextRadioStationUltimate(){
-        RadioInterface radio = new RadioInterface(10);
+        RadioInterface radioInterface = new RadioInterface();
+        radioInterface.setCurrentRadioStation(10);
+        radioInterface.nextRadioStation();
+        int actual = radioInterface.getCurrentStation();
+        int expect = 0;
+        assertEquals(expect, actual);
+    }
+
+    @Test
+    void shouldNextRadioStationUnderLimits(){
+        RadioInterface radio = new RadioInterface();
+        radio.setCurrentRadioStation(14);
         radio.nextRadioStation();
         int actual = radio.getCurrentStation();
         int expect = 0;
@@ -74,15 +75,7 @@ class RadioInterfaceTest {
     }
 
     @Test
-    void shouldNextRadioStationUnderLimits(){
-        RadioInterface radio = new RadioInterface(15);
-        radio.nextRadioStation();
-        int actual = radio.getCurrentStation();
-        int expect = 1;
-        assertEquals(expect, actual);
-    }
-
-    @Test void shouldNextRadioStationBeforeLimits(){
+    void shouldNextRadioStationBeforeLimits(){
         RadioInterface radio = new RadioInterface(-3);
         radio.nextRadioStation();
         int actual = radio.getCurrentStation();
@@ -92,7 +85,8 @@ class RadioInterfaceTest {
 
     @Test
     void shouldPrevRadioStationCorrect() {
-        RadioInterface radio = new RadioInterface(4);
+        RadioInterface radio = new RadioInterface();
+        radio.setCurrentRadioStation(4);
         radio.prevRadioStation();
         int actual = radio.getCurrentStation();
         int expected = 3;
@@ -100,17 +94,40 @@ class RadioInterfaceTest {
     }
 
     @Test
-    void shouldPrevRadioStationUnderLimits() {
-        RadioInterface radio = new RadioInterface(156);
+    void shouldPrevRadioStationEqualMinStation() {
+        RadioInterface radio = new RadioInterface();
+        radio.setCurrentRadioStation(0);
         radio.prevRadioStation();
         int actual = radio.getCurrentStation();
-        int expect = 10;
+        int expected = 10;
+        assertEquals(expected, actual);
+    }
+
+
+    @Test
+    void shouldPrevRadioStationEqualLimitStation() {
+        RadioInterface radio = new RadioInterface();
+        radio.setCurrentRadioStation(10);
+        radio.prevRadioStation();
+        int actual = radio.getCurrentStation();
+        int expected = 9;
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void shouldPrevRadioStationUnderLimits() {
+        RadioInterface radio = new RadioInterface();
+        radio.setCurrentRadioStation(143);
+        radio.prevRadioStation();
+        int actual = radio.getCurrentStation();
+        int expect = 9;
         assertEquals(expect, actual);
 
     }
 
     @Test
     void shouldSetCurrentLevelSoundCorrect() {
+        RadioInterface radio = new RadioInterface();
         int actual = radio.setCurrentLevelSound(45);
         int expect = 45;
         assertEquals(expect, actual);
@@ -119,6 +136,7 @@ class RadioInterfaceTest {
 
     @Test
     void shouldSetCurrentLevelSoundMoreThenMax() {
+        RadioInterface radio = new RadioInterface();
         int actual = radio.setCurrentLevelSound( 140);
         int expect = 100;
         assertEquals(expect, actual);
@@ -127,6 +145,7 @@ class RadioInterfaceTest {
 
     @Test
     void shouldSetCurrentLevelSoundMoreThenMix() {
+        RadioInterface radio = new RadioInterface();
         int actual = radio.setCurrentLevelSound(-5);
         int expect = 0;
         assertEquals(expect, actual);
@@ -135,6 +154,7 @@ class RadioInterfaceTest {
 
     @Test
     void shouldSetMaxSoundCorrect() {
+        RadioInterface radio = new RadioInterface();
         radio.setCurrentLevelSound(60);
         radio.setMaxVolumeSound();
         int actual = radio.getLevelSound();
@@ -145,6 +165,7 @@ class RadioInterfaceTest {
 
     @Test
     void shouldSetMaxSoundMoreThenMax() {
+        RadioInterface radio = new RadioInterface();
         radio.setCurrentLevelSound(130);
         radio.setMaxVolumeSound();
         int actual = radio.getLevelSound();
@@ -155,6 +176,7 @@ class RadioInterfaceTest {
 
     @Test
     void shouldSetMinSoundCorrect() {
+        RadioInterface radio = new RadioInterface();
         radio.setCurrentLevelSound(70);
         radio.setMinVolumeSound();
         int actual = radio.getLevelSound();
@@ -165,46 +187,12 @@ class RadioInterfaceTest {
 
     @Test
     void shouldSetMinSoundMoreThenMin() {
+        RadioInterface radio = new RadioInterface();
         radio.setCurrentLevelSound(-9);
         radio.setMinVolumeSound();
         int actual = radio.getLevelSound();
         int expect = 0;
         assertEquals(expect,actual);
-    }
-
-    @Test
-    void shouldConstructorStationWorkCorrect() {
-        RadioInterface radioInterface = new RadioInterface(5);
-        int expected = 5;
-        assertEquals(expected, radioInterface.getCurrentStation());
-    }
-
-    @Test
-    void shouldConstructorStationWorkMinData() {
-        RadioInterface radioInterface = new RadioInterface(0);
-        int expected = 0;
-        assertEquals(expected, radioInterface.getCurrentStation());
-    }
-
-    @Test
-    void shouldConstructorStationWorkLastData() {
-        RadioInterface radioInterface = new RadioInterface(10);
-        int expected = 10;
-        assertEquals(expected, radioInterface.getCurrentStation());
-    }
-
-    @Test
-    void shouldConstructorStationWorkOutMaxData() {
-        RadioInterface radioInterface = new RadioInterface(15);
-        int expected = 0;
-        assertEquals(expected, radioInterface.getCurrentStation());
-    }
-
-    @Test
-    void shouldConstructorStationWorkOutMixData() {
-        RadioInterface radioInterface = new RadioInterface(-56);
-        int expected = 0;
-        assertEquals(expected, radioInterface.getCurrentStation());
     }
 
 

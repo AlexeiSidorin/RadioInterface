@@ -2,23 +2,24 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 public class RadioInterface {
 
     private int currentStation;
-    private int levelSound;
     private int firstStation = 0;
     private int lastStation = 10;
+
+    private int levelSound;
     private int minSound = 0;
     private int maxSound = 100;
 
-    public RadioInterface(int currentStation) {
-        if (currentStation > lastStation || currentStation < firstStation) {
-            return;
-        }
-        this.currentStation = currentStation;
+
+    public RadioInterface(int lastStation){
+        this.lastStation=lastStation;
     }
 
+    public RadioInterface(){
+
+    }
 
 
 
